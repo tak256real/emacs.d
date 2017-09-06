@@ -123,6 +123,7 @@
 (require 'init-folding)
 (require 'init-dash)
 (require 'init-ledger)
+(require 'init-migemo)
 (require 'init-ddskk)
 ;; Extra packages which don't require any configuration
 
