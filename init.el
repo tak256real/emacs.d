@@ -123,6 +123,7 @@
 (require 'init-folding)
 (require 'init-dash)
 (require 'init-ledger)
+(require 'init-ddskk)
 ;; Extra packages which don't require any configuration
 
 (require-package 'gnuplot)
