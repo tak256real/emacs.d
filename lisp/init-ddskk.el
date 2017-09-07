@@ -66,3 +66,5 @@
      (if (re-search-forward "．" 10000 t)
          (setq skk-kutouten-type 'en)
        (setq skk-kutouten-type 'jp)))))
+
+(provide 'init-ddskk)

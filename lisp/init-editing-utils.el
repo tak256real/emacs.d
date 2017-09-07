@@ -23,6 +23,8 @@
  delete-selection-mode t
  ediff-split-window-function 'split-window-horizontally
  ediff-window-setup-function 'ediff-setup-windows-plain
+ tab-width 4
+ c-basic-offset tab-width
  indent-tabs-mode nil
  make-backup-files nil
  mouse-yank-at-point t
