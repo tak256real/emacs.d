@@ -174,6 +174,12 @@
 ;;----------------------------------------------------------------------------
 ;; Handy key bindings
 ;;----------------------------------------------------------------------------
+(global-set-key "\C-h" 'delete-backward-char)
+;;      --- こちらが一般的ではあるが、nwで使うとiserchに問題が…
+;;          効かない場合は以下を試す
+                                        ;(keyboard-translate ?\C-h ?\C-?)
+                                        ;(global-set-key "\C-h" nil)
+
 (global-set-key (kbd "C-.") 'set-mark-command)
 (global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
