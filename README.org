@@ -27,6 +27,8 @@
 
 * 概要
 
+* テーマの変更とカスタマイズ
+  
 * Emacs24 からの Lexical Scope
   Emacs24 からは Emacs Lisp の先頭に下記を記述する事で、 setq で宣言した変数が Lexical Scope になる。
   #+BEGIN_SRC emacs-lisp
@@ -63,6 +65,29 @@
   (add-auto-mode 'js-mode "\\.jshintrc\\'")
   #+END_SRC
   
+* wgrep.el
+  grep のバッファでそのまま直接編集できるようにする elisp
 
+* project-local-variable.el
+  .emacs-project ファイルを作成できる。
+  特定の条件でのみ評価されるファイルであるようだ。
+  詳細は不明
+
+* diminish.el
+  diminish.el を使用すると、マイナーモードインジケータを削除または省略する事ができる。
+  下記の eval-after-load は diminish モードを起動時に読みこまないようにする.
+  #+BEGIN_SRC emacs-lisp
+  (require 'diminish)
+  (eval-after-load "filladapt" '(diminish 'filladapt-mode))
+  #+END_SRC
+  
 * 参考文献
   [[https://github.com/purcell/emacs.d][GitHub - purcell/emacs.d: An Emacs configuration bundle with batteries included]]
+
+
+This file allows you to create .emacs-project files that are
+evaluated when a file is opened. You may also create
+.emacs-project-$MODE files that only get loaded when you open files
+of a specific mode in the project. All files for which a
+.emacs-project file exists in an ancestor directory will have it
+loaded.

@@ -125,6 +125,7 @@
 (require 'init-ledger)
 (require 'init-migemo)
 (require 'init-ddskk)
+(require 'init-gtags)
 ;; Extra packages which don't require any configuration
 
 (require-package 'gnuplot)

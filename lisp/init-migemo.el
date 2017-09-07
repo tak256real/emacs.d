@@ -18,3 +18,5 @@
 (load-library "migemo")
 ;; 起動時に初期化も行う
 (migemo-init)
+
+(provide 'init-migemo)
