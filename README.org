@@ -64,7 +64,7 @@
   #+BEGIN_SRC emacs-lisp
   (add-auto-mode 'js-mode "\\.jshintrc\\'")
   #+END_SRC
-  
+
 * wgrep.el
   grep のバッファでそのまま直接編集できるようにする elisp
 
@@ -80,14 +80,19 @@
   (require 'diminish)
   (eval-after-load "filladapt" '(diminish 'filladapt-mode))
   #+END_SRC
-  
+
+* scratch.el
+  scratch バッファを作成する事ができる。
+  バッファは作成を実行したバッファと同じモードで生成される。
+
+* command-log-model.el
+  一部、または全てのバッファのイベント履歴とコマンド履歴を表示する。
+
+* init-frame-hooks
+  フレームの設定？
+  よくわからない
+
+* init-xterm
+
 * 参考文献
   [[https://github.com/purcell/emacs.d][GitHub - purcell/emacs.d: An Emacs configuration bundle with batteries included]]
-
-
-This file allows you to create .emacs-project files that are
-evaluated when a file is opened. You may also create
-.emacs-project-$MODE files that only get loaded when you open files
-of a specific mode in the project. All files for which a
-.emacs-project file exists in an ancestor directory will have it
-loaded.
