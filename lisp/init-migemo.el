@@ -2,6 +2,7 @@
 
 ;;; migemo コマンドを cmigemo に置き替える
 (setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
 
 ;;; migemo 関連のパスを設定
 (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
