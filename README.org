@@ -108,5 +108,18 @@
 
 * init-gui-frame.el
 
+
+* 検討中
+  
+** バッファ数の抑制
+
+*** 背景
+    前回終了時のバッファを復帰させるため、
+    場合によっては数が多すぎて起動が重くなってしまう。
+    また、多すぎると操作も面倒だ。
+
+*** 対応案
+    [[http://d.hatena.ne.jp/rubikitch/20090407/1239115399][midnight.el で毎日 0 時に古いバッファを削除する]]
+
 * 参考文献
   [[https://github.com/purcell/emacs.d][GitHub - purcell/emacs.d: An Emacs configuration bundle with batteries included]]
