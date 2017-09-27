@@ -9,6 +9,16 @@
 
 (require-package 'helm-gtags)
 
+
+;;; 候補を表示する際の表示形式.
+;;;   - 'root     タグファイルがあるディレクトリを頂点としたパス
+;;;   - 'absolete 絶対パス
+;;;   - 'relative カレントディレクトリからの相対パス
+(setq helm-c-gtags-path-style 'relative) ;
+
+;;; タグから検索を行う際, 大文字小文字を無視する (デフォルトは nil で無視しない).
+(setq helm-c-gtags-ignore-case t)
+
 (setq helm-gtags-mode-hook
       '(lambda ()
          (define-key helm-gtags-mode-map "\C-cs" 'helm-gtags-find-symbol)
