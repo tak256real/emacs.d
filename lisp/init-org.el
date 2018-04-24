@@ -348,6 +348,19 @@ typical word processor."
 ;;                   (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
 ;;                 (insert (match-string 0))))))
 
+(defun remove-org-newlines-at-cjk-text (&optional _mode)
+  "先頭が '*', '#', '|' でなく、改行の前後が日本の文字の場合はその改行を除去する。"
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "^\\([^|#*\n].+\\)\\(.\\)\n *\\(.\\)" nil t)
+    (if (and (> (string-to-char (match-string 2)) #x2000)
+             (> (string-to-char (match-string 3)) #x2000))
+        (replace-match "\\1\\2\\3"))
+    (goto-char (point-at-bol))))
+
+(with-eval-after-load "ox"
+  (add-hook 'org-export-before-processing-hook 'remove-org-newlines-at-cjk-text))
+
 
 (after-load 'org
   (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)
