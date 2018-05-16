@@ -28,12 +28,14 @@
  scroll-preserve-screen-position 'always
  set-mark-command-repeat-pop t
  tooltip-delay 1.5
- truncate-lines t
- truncate-partial-width-windows t)
+ truncate-lines nil
+ truncate-partial-width-windows nil)
 
 (add-hook 'after-init-hook 'global-auto-revert-mode)
 (setq global-auto-revert-non-file-buffers t
       auto-revert-verbose nil)
+(after-load 'autorevert
+  (diminish 'auto-revert-mode))
 
 (add-hook 'after-init-hook 'transient-mark-mode)
 
@@ -103,10 +105,11 @@
 
 
 (when (maybe-require-package 'symbol-overlay)
-  (dolist (hook '(prog-mode-hook html-mode-hook css-mode-hook))
+  (dolist (hook '(prog-mode-hook html-mode-hook css-mode-hook yaml-mode-hook conf-mode-hook))
     (add-hook hook 'symbol-overlay-mode))
   (after-load 'symbol-overlay
     (diminish 'symbol-overlay-mode)
+    (define-key symbol-overlay-mode-map (kbd "M-i") 'symbol-overlay-put)
     (define-key symbol-overlay-mode-map (kbd "M-n") 'symbol-overlay-jump-next)
     (define-key symbol-overlay-mode-map (kbd "M-p") 'symbol-overlay-jump-prev)))
 
@@ -245,6 +248,7 @@
 ;;----------------------------------------------------------------------------
 ;; Cut/copy the current line if no region is active
 ;;----------------------------------------------------------------------------
+<<<<<<< HEAD
 ;; (require-package 'whole-line-or-region)
 ;; (add-hook 'after-init-hook 'whole-line-or-region-mode)
 ;; (after-load 'whole-line-or-region
@@ -267,6 +271,30 @@
 ;;              (,mode-name 1)))))))
 
 ;; (suspend-mode-during-cua-rect-selection 'whole-line-or-region-mode)
+=======
+(require-package 'whole-line-or-region)
+(add-hook 'after-init-hook 'whole-line-or-region-mode)
+(after-load 'whole-line-or-region
+  (diminish 'whole-line-or-region-local-mode))
+
+(defun suspend-mode-during-cua-rect-selection (mode-name)
+  "Add an advice to suspend `MODE-NAME' while selecting a CUA rectangle."
+  (let ((flagvar (intern (format "%s-was-active-before-cua-rectangle" mode-name)))
+        (advice-name (intern (format "suspend-%s" mode-name))))
+    (eval-after-load 'cua-rect
+      `(progn
+         (defvar ,flagvar nil)
+         (make-variable-buffer-local ',flagvar)
+         (defadvice cua--activate-rectangle (after ,advice-name activate)
+           (setq ,flagvar (and (boundp ',mode-name) ,mode-name))
+           (when ,flagvar
+             (,mode-name 0)))
+         (defadvice cua--deactivate-rectangle (after ,advice-name activate)
+           (when ,flagvar
+             (,mode-name 1)))))))
+
+(suspend-mode-during-cua-rect-selection 'whole-line-or-region-mode)
+>>>>>>> upstream/master
 
 
 
@@ -324,7 +352,7 @@ With arg N, insert N newlines."
 
 
 (require-package 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x" "C-c" "C-x 4" "C-x 5" "C-c ;" "C-c ; f" "C-c ' f" "C-x n" "C-x C-r" "C-x r" "M-s" "C-h" "C-c C-a"))
+(setq guide-key/guide-key-sequence t)
 (add-hook 'after-init-hook 'guide-key-mode)
 (after-load 'guide-key
   (diminish 'guide-key-mode))
