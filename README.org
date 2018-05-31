@@ -1,0 +1,125 @@
+#+TITLE:     Emacs 設定
+#+AUTHOR:    Takuya Sato
+#+EMAIL:     sasuke.tak@gmail.com
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  ja
+#+OPTIONS:   H:3 num:nil toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:t ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+* 背景
+  Emacs の設定が荒れてきたので、2017年、見直す事にした。
+* 構成
+  #+BEGIN_EXAMPLE
+  .emacs.d
+  ├── README.org
+  ├── init.el
+  └── lisp
+      ├── init-elpa.el
+      ├── init-exec-path.el
+      ├── init-site-lisp.el
+      └── init-utils.el  イニシャライズで用いる便利な関数などを定義
+  #+END_EXAMPLE
+
+* 概要
+
+* Emacs の終了時の状態を保存する desktop
+  保存対象は以下
+  - いくつかのグローバル変数
+  - ファイルバッファ
+    - メジャーモード
+    - ディレクトリ
+    - ポイント(カーソル)の位置
+    - 選択はんい
+    - バッファのリードライト
+    - いくつかのローカル変数
+
+
+
+
+
+
+* Emacs24 からの Lexical Scope
+  Emacs24 からは Emacs Lisp の先頭に下記を記述する事で、 setq で宣言した変数が Lexical Scope になる。
+  #+BEGIN_SRC emacs-lisp
+  -*- lexical-binding: t -*-
+  #+END_SRC
+  従前は Dynamic Scope となっており、関数内の変数への代入が関数外にも影響する形だった。
+
+* auto-mode-alist に モードを追加する便利な関数 add-auto-mode
+  Emacs は拡張子の関連付けのように、メジャーモード (major mode) と呼ばれる関数を起動すると、
+  適した編集機能を利用するように設計されている。
+
+  auto-mode-alist でファイル名のパターンとメジャーモードを紐付けてやると、
+  ファイルを開いた時に自動でそのモードが起動されるようになる。
+
+  紐付けを実施するには、例えば特定の拡張子についてモードを指定したい場合、 
+  例えば、下記の elisp のように、正規表現にマッチさせる形で判定を実施する方法、
+
+  #+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.rb\\'" . enh-ruby-mode))
+  (add-to-list 'auto-mode-alist '("\\.rake\\'" . enh-ruby-mode))
+  (add-to-list 'auto-mode-alist '("\\.m\\(ark\\)?do?wn\\'" . gfm-mode))
+  #+END_SRC
+
+  または、下記のようにファイル名を丸々指定する方法などがある。
+
+  #+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("/\\.jshintrc\\'" . js-mode))
+  #+END_SRC
+
+  この通り面倒な記述になるので、 
+  add-auto-mode(mode &rest patterns) という関数を設け、下記のように記述を簡略化できるようにしている
+
+  #+BEGIN_SRC emacs-lisp
+  (add-auto-mode 'js-mode "\\.jshintrc\\'")
+  #+END_SRC
+
+* wgrep.el
+  grep のバッファでそのまま直接編集できるようにする elisp
+
+* project-local-variable.el
+  .emacs-project ファイルを作成できる。
+  特定の条件でのみ評価されるファイルであるようだ。
+  詳細は不明
+
+* diminish.el
+  diminish.el を使用すると、マイナーモードインジケータを削除または省略する事ができる。
+  下記の eval-after-load は diminish モードを起動時に読みこまないようにする.
+  #+BEGIN_SRC emacs-lisp
+  (require 'diminish)
+  (eval-after-load "filladapt" '(diminish 'filladapt-mode))
+  #+END_SRC
+
+* scratch.el
+  scratch バッファを作成する事ができる。
+  バッファは作成を実行したバッファと同じモードで生成される。
+
+* command-log-model.el
+  一部、または全てのバッファのイベント履歴とコマンド履歴を表示する。
+
+* init-frame-hooks
+  フレームの設定？
+  よくわからない
+
+* init-gui-frame.el
+
+
+* 検討中
+  
+** バッファ数の抑制
+
+*** 背景
+    前回終了時のバッファを復帰させるため、
+    場合によっては数が多すぎて起動が重くなってしまう。
+    また、多すぎると操作も面倒だ。
+
+*** 対応案
+    [[http://d.hatena.ne.jp/rubikitch/20090407/1239115399][midnight.el で毎日 0 時に古いバッファを削除する]]
+
+* 参考文献
+  [[https://github.com/purcell/emacs.d][GitHub - purcell/emacs.d: An Emacs configuration bundle with batteries included]]

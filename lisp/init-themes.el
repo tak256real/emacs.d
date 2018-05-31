@@ -1,6 +1,7 @@
 (require-package 'color-theme-sanityinc-solarized)
 (require-package 'color-theme-sanityinc-tomorrow)
-
+(require-package 'monokai-theme)
+(require-package 'eziam-theme)
 ;; If you don't customize it, this is the theme you get.
 (setq-default custom-enabled-themes '(sanityinc-tomorrow-bright))
 
@@ -29,6 +30,11 @@
   (interactive)
   (setq custom-enabled-themes '(sanityinc-tomorrow-bright))
   (reapply-themes))
+
+
+(when (maybe-require-package 'dimmer)
+  (setq-default dimmer-fraction 0.1)
+  (add-hook 'after-init-hook 'dimmer-mode))
 
 
 (provide 'init-themes)

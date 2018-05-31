@@ -1,4 +1,3 @@
-(maybe-require-package 'org-fstree)
 (when *is-a-mac*
   (maybe-require-package 'grab-mac-link))
 
@@ -22,6 +21,7 @@
 
 ;; Lots of stuff from http://doc.norang.ca/org-mode.html
 
+;; TODO: fail gracefully
 (defun sanityinc/grab-ditaa (url jar-name)
   "Download URL and extract JAR-NAME as `org-ditaa-jar-path'."
   ;; TODO: handle errors
@@ -78,12 +78,16 @@ typical word processor."
         ;;(delete-selection-mode 1)
         (set (make-local-variable 'blink-cursor-interval) 0.6)
         (set (make-local-variable 'show-trailing-whitespace) nil)
+        (set (make-local-variable 'line-spacing) 0.2)
+        (set (make-local-variable 'electric-pair-mode) nil)
         (ignore-errors (flyspell-mode 1))
         (visual-line-mode 1))
     (kill-local-variable 'truncate-lines)
     (kill-local-variable 'word-wrap)
     (kill-local-variable 'cursor-type)
     (kill-local-variable 'show-trailing-whitespace)
+    (kill-local-variable 'line-spacing)
+    (kill-local-variable 'electric-pair-mode)
     (buffer-face-mode -1)
     ;; (delete-selection-mode -1)
     (flyspell-mode -1)
@@ -153,7 +157,7 @@ typical word processor."
 ;;; To-do settings
 
 (setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
+      (quote ((sequence "TASK(t)" "NEXT(n)" "|" "DONE(d!/!)")
               (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
               (sequence "WAITING(w@/!)" "DELEGATED(e!)" "HOLD(h)" "|" "CANCELLED(c@/!)")))
       org-todo-repeat-to-state "NEXT")
@@ -304,18 +308,6 @@ typical word processor."
 
 
 
-;; Remove empty LOGBOOK drawers on clock out
-(defun sanityinc/remove-empty-drawer-on-clock-out ()
-  (interactive)
-  (save-excursion
-    (beginning-of-line 0)
-    (org-remove-empty-drawer-at "LOGBOOK" (point))))
-
-(after-load 'org-clock
-  (add-hook 'org-clock-out-hook 'sanityinc/remove-empty-drawer-on-clock-out 'append))
-
-
-
 ;; TODO: warn about inconsistent items, e.g. TODO inside non-PROJECT
 ;; TODO: nested projects!
 
@@ -355,6 +347,19 @@ typical word processor."
 ;;                 (save-excursion
 ;;                   (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
 ;;                 (insert (match-string 0))))))
+
+(defun remove-org-newlines-at-cjk-text (&optional _mode)
+  "先頭が '*', '#', '|' でなく、改行の前後が日本の文字の場合はその改行を除去する。"
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "^\\([^|#*\n].+\\)\\(.\\)\n *\\(.\\)" nil t)
+    (if (and (> (string-to-char (match-string 2)) #x2000)
+             (> (string-to-char (match-string 3)) #x2000))
+        (replace-match "\\1\\2\\3"))
+    (goto-char (point-at-bol))))
+
+(with-eval-after-load "ox"
+  (add-hook 'org-export-before-processing-hook 'remove-org-newlines-at-cjk-text))
 
 
 (after-load 'org
