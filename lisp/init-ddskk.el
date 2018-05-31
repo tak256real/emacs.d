@@ -7,6 +7,9 @@
 (setq skk-server-host "localhost")
 (setq skk-server-portnum 1178)
 
+;;
+(setq skk-jisyo-code 'utf-8)
+
 ;; 変換時，改行でも確定
 (setq skk-egg-like-newline t)
 
@@ -42,16 +45,16 @@
 ;; 10 分放置すると個人辞書が自動的に保存される設定
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;; 自動保存設定：ここから
-(defvar skk-auto-save-jisyo-interval 600)
-(defun skk-auto-save-jisyo ()
-  (skk-save-jisyo)
-  ;; skk-bayesian.el を使っていなければ以下の 2 行はコメントアウト
-  ;; (skk-bayesian-save-history)
-  ;; (skk-bayesian-corpus-save)
-  )
-(run-with-idle-timer skk-auto-save-jisyo-interval
-                     skk-auto-save-jisyo-interval
-                     'skk-auto-save-jisyo)
+;; (defvar skk-auto-save-jisyo-interval 600)
+;; (defun skk-auto-save-jisyo ()
+;;   (skk-save-jisyo)
+;;   ;; skk-bayesian.el を使っていなければ以下の 2 行はコメントアウト
+;;   ;; (skk-bayesian-save-history)
+;;   ;; (skk-bayesian-corpus-save)
+;;   )
+;; (Run-with-idle-timer skk-auto-save-jisyo-interval
+;;                      skk-auto-save-jisyo-interval
+;;                      'skk-auto-save-jisyo)
 ;; (cancel-function-timers 'skk-auto-save-jisyo)
 ;; 自動保存設定：ここまで
 
