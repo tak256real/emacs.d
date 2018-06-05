@@ -50,3 +50,6 @@ site-lisp/package/
 /rake.cache
 /plantuml.jar
 /magithub
+/idlwave/
+/skk-get-jisyo/
+/url/
