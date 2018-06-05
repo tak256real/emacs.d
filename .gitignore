@@ -51,3 +51,6 @@ site-lisp/package/
 .cache/
 /forge-database.sqlite
 /transient
+/idlwave/
+/skk-get-jisyo/
+/url/
