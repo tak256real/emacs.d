@@ -196,8 +196,8 @@ typical word processor."
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
-              (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
-              (sequence "WAITING(w@/!)" "DELEGATED(e!)" "HOLD(h)" "|" "CANCELLED(c@/!)")))
+              (sequence "PROJECT(p)" "|" "COMPLETE(c!/!)" "CANCELLED(a@/!)")
+              (sequence "WAITING(w@/!)" "DELEGATED(e!)" "HOLD(h)" "|" "CANCELLED(a@/!)")))
       org-todo-repeat-to-state "NEXT")
 
 (setq org-todo-keyword-faces
