@@ -94,3 +94,5 @@
 (with-eval-after-load 'tex-jp
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 (setq reftex-plug-into-AUCTeX t)
+
+(provide 'init-auctex)
