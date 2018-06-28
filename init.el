@@ -137,6 +137,8 @@
 (require 'init-gtags)
 (require 'init-helm)
 ;; (require 'init-groovy)
+(require 'init-auctex)
+
 ;; Extra packages which don't require any configuration
 
 (require-package 'gnuplot)
