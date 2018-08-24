@@ -43,4 +43,9 @@
 (add-hook 'c-mode-common-hook 'google-make-newline-indent)
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 (add-hook 'c++-mode-common-hook 'my-c-mode-common-hook)
+
+(unless window-system
+  (require 'locale-eaw-emoji)
+  )
+
 (provide 'init-local)
