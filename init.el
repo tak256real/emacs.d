@@ -135,6 +135,7 @@
 (require 'init-helm)
 ;; (require 'init-groovy)
 (require 'init-auctex)
+(require 'init-yasnippet)
 
 ;; Extra packages which don't require any configuration
 

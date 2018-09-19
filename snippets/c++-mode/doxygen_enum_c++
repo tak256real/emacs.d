@@ -1,0 +1,19 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: doxygen_enum_c++
+# key: doxyenumc
+# --
+// -----------------------------------------------
+//! @enum  Em${1:EnumName}
+//! @brief ${2:Abstruct}
+//!
+//! ${3:Description...}
+// -----------------------------------------------
+typedef enum {
+    k${4:EnumVal1},	//!< ${5:Description EnumVal1}
+    k${6:EnumVal2},	//!< ${7:Description EnumVal2}
+
+        ${8:and more ...}
+
+    kMax$1
+} Em$1;
+$0
