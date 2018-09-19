@@ -1,0 +1,15 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: doxygen_function_c++
+# key: doxyfuncc
+# --
+// -----------------------------------------------------------------------------
+//! @brief ${1:FunctionName}
+//!
+//! ${2:Note...}
+//! @param[out]    ${3:Arg1(output)} ${4:Description of the Arg1}
+//! @param[in]     ${5:Arg2(input)} ${6:Description of the Arg2}
+//! @param[in,out] ${7:Arg3(input/output)} ${8:Description of the Arg3}
+//! @return ${9:Description of the return value}
+//! @exception ${10:Exception handling(Not needed "none")}
+// -----------------------------------------------------------------------------
+$0
