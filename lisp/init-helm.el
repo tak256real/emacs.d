@@ -4,6 +4,7 @@
                                         ;(helm-adaptative-mode 1)
 
 (global-set-key [remap execute-extended-command] 'helm-M-x)
+(global-set-key (kbd "C-x C-b") 'helm-recentf)
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 

@@ -1,0 +1,18 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: doxygen_struct_c++
+# key: doxystructc
+# --
+// -----------------------------------------------
+//! @struct T_${1:StructName}
+//! @brief  ${2:Abstruct}
+//!
+//! ${3:Description...}
+// -----------------------------------------------
+typedef struct _T_$1 {
+	${4:member1};		//!< ${5:Description of member1}
+	${6:member2};		//!< ${7:Description of member2}
+
+		${8:and more...}
+} T_$1;
+$0
+
