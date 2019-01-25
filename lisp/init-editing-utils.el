@@ -1,3 +1,7 @@
+;;; init-editing-utils.el --- Day-to-day editing helpers -*- lexical-binding: t -*-
+;;; Commentary:
+;;; Code:
+
 (require-package 'unfill)
 
 (when (fboundp 'electric-pair-mode)
@@ -85,8 +89,8 @@
 
 
 
-(unless (fboundp 'display-line-numbers-mode)
-  (require-package 'nlinum))
+(when (fboundp 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode))
 
 
 (when (require-package 'rainbow-delimiters)
@@ -98,14 +102,8 @@
   (add-hook 'after-init-hook 'global-prettify-symbols-mode))
 
 
-(require-package 'undo-tree)
-(add-hook 'after-init-hook 'global-undo-tree-mode)
-(after-load 'undo-tree
-  (diminish 'undo-tree-mode))
-
-
 (when (maybe-require-package 'symbol-overlay)
-  (dolist (hook '(prog-mode-hook html-mode-hook css-mode-hook yaml-mode-hook conf-mode-hook))
+  (dolist (hook '(prog-mode-hook html-mode-hook yaml-mode-hook conf-mode-hook))
     (add-hook hook 'symbol-overlay-mode))
   (after-load 'symbol-overlay
     (diminish 'symbol-overlay-mode)
@@ -233,16 +231,16 @@
 ;;----------------------------------------------------------------------------
 ;; Fix backward-up-list to understand quotes, see http://bit.ly/h7mdIL
 ;;----------------------------------------------------------------------------
-(defun backward-up-sexp (arg)
+(defun sanityinc/backward-up-sexp (arg)
   "Jump up to the start of the ARG'th enclosing sexp."
   (interactive "p")
   (let ((ppss (syntax-ppss)))
     (cond ((elt ppss 3)
            (goto-char (elt ppss 8))
-           (backward-up-sexp (1- arg)))
+           (sanityinc/backward-up-sexp (1- arg)))
           ((backward-up-list arg)))))
 
-(global-set-key [remap backward-up-list] 'backward-up-sexp) ; C-M-u, C-M-up
+(global-set-key [remap backward-up-list] 'sanityinc/backward-up-sexp) ; C-M-u, C-M-up
 
 
 ;;----------------------------------------------------------------------------
@@ -252,63 +250,69 @@
 ;; (add-hook 'after-init-hook 'whole-line-or-region-mode)
 ;; (after-load 'whole-line-or-region
 ;;   (diminish 'whole-line-or-region-local-mode))
-;; 
-;; (defun suspend-mode-during-cua-rect-selection (mode-name)
+
+;; 
+;; ;; Some local minor modes clash with CUA rectangle selection
+
+;; (defvar-local sanityinc/suspended-modes-during-cua-rect nil
+;;   "Modes that should be re-activated when cua-rect selection is done.")
+
+;; (eval-after-load 'cua-rect
+;;   (advice-add 'cua--deactivate-rectangle :after
+;;               (lambda (&rest _)
+;;                 (dolist (m sanityinc/suspended-modes-during-cua-rect)
+;;                   (funcall m 1)
+;;                   (setq sanityinc/suspended-modes-during-cua-rect nil)))))
+
+;; (defun sanityinc/suspend-mode-during-cua-rect-selection (mode-name)
 ;;   "Add an advice to suspend `MODE-NAME' while selecting a CUA rectangle."
-;;   (let ((flagvar (intern (format "%s-was-active-before-cua-rectangle" mode-name)))
-;;         (advice-name (intern (format "suspend-%s" mode-name))))
-;;     (eval-after-load 'cua-rect
-;;       `(progn
-;;          (defvar ,flagvar nil)
-;;          (make-variable-buffer-local ',flagvar)
-;;          (defadvice cua--activate-rectangle (after ,advice-name activate)
-;;            (setq ,flagvar (and (boundp ',mode-name) ,mode-name))
-;;            (when ,flagvar
-;;              (,mode-name 0)))
-;;          (defadvice cua--deactivate-rectangle (after ,advice-name activate)
-;;            (when ,flagvar
-;;              (,mode-name 1)))))))
+;;   (eval-after-load 'cua-rect
+;;     (advice-add 'cua--activate-rectangle :after
+;;                 (lambda (&rest _)
+;;                   (when (bound-and-true-p mode-name)
+;;                     (push mode-name sanityinc/suspended-modes-during-cua-rect)
+;;                     (funcall mode-name 0))))))
 
-;; (suspend-mode-during-cua-rect-selection 'whole-line-or-region-mode)
+;; (sanityinc/suspend-mode-during-cua-rect-selection 'whole-line-or-region-local-mode)
 
 
-
+;; 
 
-(defun sanityinc/open-line-with-reindent (n)
-  "A version of `open-line' which reindents the start and end positions.
-If there is a fill prefix and/or a `left-margin', insert them
-on the new line if the line would have been blank.
-With arg N, insert N newlines."
-  (interactive "*p")
-  (let* ((do-fill-prefix (and fill-prefix (bolp)))
-         (do-left-margin (and (bolp) (> (current-left-margin) 0)))
-         (loc (point-marker))
-         ;; Don't expand an abbrev before point.
-         (abbrev-mode nil))
-    (delete-horizontal-space t)
-    (newline n)
-    (indent-according-to-mode)
-    (when (eolp)
-      (delete-horizontal-space t))
-    (goto-char loc)
-    (while (> n 0)
-      (cond ((bolp)
-             (if do-left-margin (indent-to (current-left-margin)))
-             (if do-fill-prefix (insert-and-inherit fill-prefix))))
-      (forward-line 1)
-      (setq n (1- n)))
-    (goto-char loc)
-    (end-of-line)
-    (indent-according-to-mode)))
+;; (defun sanityinc/open-line-with-reindent (n)
+;;   "A version of `open-line' which reindents the start and end positions.
+;; If there is a fill prefix and/or a `left-margin', insert them
+;; on the new line if the line would have been blank.
+;; With arg N, insert N newlines."
+;;   (interactive "*p")
+;;   (let* ((do-fill-prefix (and fill-prefix (bolp)))
+;;          (do-left-margin (and (bolp) (> (current-left-margin) 0)))
+;;          (loc (point-marker))
+;;          ;; Don't expand an abbrev before point.
+;;          (abbrev-mode nil))
+;;     (delete-horizontal-space t)
+;;     (newline n)
+;;     (indent-according-to-mode)
+;;     (when (eolp)
+;;       (delete-horizontal-space t))
+;;     (goto-char loc)
+;;     (while (> n 0)
+;;       (cond ((bolp)
+;;              (if do-left-margin (indent-to (current-left-margin)))
+;;              (if do-fill-prefix (insert-and-inherit fill-prefix))))
+;;       (forward-line 1)
+;;       (setq n (1- n)))
+;;     (goto-char loc)
+;;     (end-of-line)
+;;     (indent-according-to-mode)))
 
-(global-set-key (kbd "C-o") 'sanityinc/open-line-with-reindent)
+;; (global-set-key (kbd "C-o") 'sanityinc/open-line-with-reindent)
 
 
 ;;----------------------------------------------------------------------------
 ;; Random line sorting
 ;;----------------------------------------------------------------------------
-(defun sort-lines-random (beg end)
-  "Sort lines in region randomly."
+(defun sanityinc/sort-lines-random (beg end)
+  "Sort lines in region from BEG to END randomly."
   (interactive "r")
   (save-excursion
     (save-restriction
@@ -334,3 +338,4 @@ With arg N, insert N newlines."
 
 
 (provide 'init-editing-utils)
+;;; init-editing-utils.el ends here
