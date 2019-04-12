@@ -32,6 +32,8 @@
 ;; (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)) ; *.h ファイルもcpp-modeで
 
 (defun my-c-mode-common-hook ()
+  (setq comment-start "// ")            ; コメントの書き出しを // にする
+  (setq comment-end "")                 ; コメントの書き終わり
   (hide-ifdef-mode 1)                  ; hide-ifdef-mode をフックする
   (helm-gtags-mode 1)                   ; gtags-mode をフックする
   (auto-revert-mode 1) ; 他のエディタなどがファイルを書き換えたらすぐにそれを反映
