@@ -54,3 +54,7 @@ site-lisp/package/
 /idlwave/
 /skk-get-jisyo/
 /url/
+.cache/
+/forge-database.sqlite
+migemo-pattern
+transient/
