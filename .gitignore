@@ -53,3 +53,5 @@ site-lisp/package/
 /url/
 .cache/
 /forge-database.sqlite
+migemo-pattern
+transient/
