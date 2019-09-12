@@ -1,3 +1,7 @@
+;;; init-recentf.el --- Settings for tracking recent files -*- lexical-binding: t -*-
+;;; Commentary:
+;;; Code:
+
 (require-package 'recentf-ext)
 
 (add-hook 'after-init-hook 'recentf-mode)
@@ -7,3 +11,4 @@
 
 
 (provide 'init-recentf)
+;;; init-recentf.el ends here
