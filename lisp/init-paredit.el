@@ -20,8 +20,8 @@
 
 
 ;; Compatibility with other modes
+;(sanityinc/suspend-mode-during-cua-rect-selection 'paredit-mode)
 
-;;(suspend-mode-during-cua-rect-selection 'paredit-mode)
 
 
 ;; Use paredit in the minibuffer

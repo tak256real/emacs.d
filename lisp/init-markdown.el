@@ -15,5 +15,6 @@
 (advice-add #'markdown-enter-key :around #'my--markdown-entery-key-ad)
 
 (provide 'init-markdown)
+
 ;;; init-markdown.el ends here
 
