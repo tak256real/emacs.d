@@ -116,10 +116,10 @@ typical word processor."
 (setq org-directory "~/org")
 (setq org-default-notes-file (concat org-directory "/inbox.org"))
 (setq org-capture-templates
-      `(("t" "todo" entry (file+headline nil "Tasks")
+      `(("t" "Tasks" entry (file+headline "" "Tasks")
          "** TODO %?\n%U\n" :clock-resume t)
-        ("n" "note" entry (file "")
-         "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
+        ("m" "Memos" entry (file+headline "" "Memos")
+         "** %? :MEMO:\n%U\n%a\n" :clock-resume t)
         ))
 
 
