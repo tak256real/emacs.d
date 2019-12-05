@@ -257,66 +257,66 @@
 ;;----------------------------------------------------------------------------
 ;; Cut/copy the current line if no region is active
 ;;----------------------------------------------------------------------------
-(require-package 'whole-line-or-region)
-(add-hook 'after-init-hook 'whole-line-or-region-global-mode)
-(after-load 'whole-line-or-region
-  (diminish 'whole-line-or-region-local-mode))
+;; (require-package 'whole-line-or-region)
+;; (add-hook 'after-init-hook 'whole-line-or-region-mode)
+;; (after-load 'whole-line-or-region
+;;   (diminish 'whole-line-or-region-local-mode))
 
-
-;; Some local minor modes clash with CUA rectangle selection
+;; 
+;; ;; Some local minor modes clash with CUA rectangle selection
 
-(defvar-local sanityinc/suspended-modes-during-cua-rect nil
-  "Modes that should be re-activated when cua-rect selection is done.")
+;; (defvar-local sanityinc/suspended-modes-during-cua-rect nil
+;;   "Modes that should be re-activated when cua-rect selection is done.")
 
-(eval-after-load 'cua-rect
-  (advice-add 'cua--deactivate-rectangle :after
-              (lambda (&rest _)
-                (dolist (m sanityinc/suspended-modes-during-cua-rect)
-                  (funcall m 1)
-                  (setq sanityinc/suspended-modes-during-cua-rect nil)))))
+;; (eval-after-load 'cua-rect
+;;   (advice-add 'cua--deactivate-rectangle :after
+;;               (lambda (&rest _)
+;;                 (dolist (m sanityinc/suspended-modes-during-cua-rect)
+;;                   (funcall m 1)
+;;                   (setq sanityinc/suspended-modes-during-cua-rect nil)))))
 
-(defun sanityinc/suspend-mode-during-cua-rect-selection (mode-name)
-  "Add an advice to suspend `MODE-NAME' while selecting a CUA rectangle."
-  (eval-after-load 'cua-rect
-    (advice-add 'cua--activate-rectangle :after
-                (lambda (&rest _)
-                  (when (bound-and-true-p mode-name)
-                    (push mode-name sanityinc/suspended-modes-during-cua-rect)
-                    (funcall mode-name 0))))))
+;; (defun sanityinc/suspend-mode-during-cua-rect-selection (mode-name)
+;;   "Add an advice to suspend `MODE-NAME' while selecting a CUA rectangle."
+;;   (eval-after-load 'cua-rect
+;;     (advice-add 'cua--activate-rectangle :after
+;;                 (lambda (&rest _)
+;;                   (when (bound-and-true-p mode-name)
+;;                     (push mode-name sanityinc/suspended-modes-during-cua-rect)
+;;                     (funcall mode-name 0))))))
 
-(sanityinc/suspend-mode-during-cua-rect-selection 'whole-line-or-region-local-mode)
+;; (sanityinc/suspend-mode-during-cua-rect-selection 'whole-line-or-region-local-mode)
 
 
-
+;; 
 
-(defun sanityinc/open-line-with-reindent (n)
-  "A version of `open-line' which reindents the start and end positions.
-If there is a fill prefix and/or a `left-margin', insert them
-on the new line if the line would have been blank.
-With arg N, insert N newlines."
-  (interactive "*p")
-  (let* ((do-fill-prefix (and fill-prefix (bolp)))
-         (do-left-margin (and (bolp) (> (current-left-margin) 0)))
-         (loc (point-marker))
-         ;; Don't expand an abbrev before point.
-         (abbrev-mode nil))
-    (delete-horizontal-space t)
-    (newline n)
-    (indent-according-to-mode)
-    (when (eolp)
-      (delete-horizontal-space t))
-    (goto-char loc)
-    (while (> n 0)
-      (cond ((bolp)
-             (if do-left-margin (indent-to (current-left-margin)))
-             (if do-fill-prefix (insert-and-inherit fill-prefix))))
-      (forward-line 1)
-      (setq n (1- n)))
-    (goto-char loc)
-    (end-of-line)
-    (indent-according-to-mode)))
+;; (defun sanityinc/open-line-with-reindent (n)
+;;   "A version of `open-line' which reindents the start and end positions.
+;; If there is a fill prefix and/or a `left-margin', insert them
+;; on the new line if the line would have been blank.
+;; With arg N, insert N newlines."
+;;   (interactive "*p")
+;;   (let* ((do-fill-prefix (and fill-prefix (bolp)))
+;;          (do-left-margin (and (bolp) (> (current-left-margin) 0)))
+;;          (loc (point-marker))
+;;          ;; Don't expand an abbrev before point.
+;;          (abbrev-mode nil))
+;;     (delete-horizontal-space t)
+;;     (newline n)
+;;     (indent-according-to-mode)
+;;     (when (eolp)
+;;       (delete-horizontal-space t))
+;;     (goto-char loc)
+;;     (while (> n 0)
+;;       (cond ((bolp)
+;;              (if do-left-margin (indent-to (current-left-margin)))
+;;              (if do-fill-prefix (insert-and-inherit fill-prefix))))
+;;       (forward-line 1)
+;;       (setq n (1- n)))
+;;     (goto-char loc)
+;;     (end-of-line)
+;;     (indent-according-to-mode)))
 
-(global-set-key (kbd "C-o") 'sanityinc/open-line-with-reindent)
+;; (global-set-key (kbd "C-o") 'sanityinc/open-line-with-reindent)
 
 
 ;;----------------------------------------------------------------------------

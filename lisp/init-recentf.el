@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(require-package 'recentf-ext)
+
 (add-hook 'after-init-hook 'recentf-mode)
 (setq-default
  recentf-max-saved-items 5120
