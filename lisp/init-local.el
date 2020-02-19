@@ -1,6 +1,23 @@
 ;; フレームのタイトル表示指定
 (setq frame-title-format
       `("Emacs - %b " (buffer-file-name "( %f )")))
+
+;; フォント
+;; 半角英字設定
+(set-face-attribute 'default nil :family "Cica" :height 90)
+;; 全角かな設定
+(set-fontset-font (frame-parameter nil 'font)
+                  'japanese-jisx0208
+                  (font-spec :family "Cica" :size 12))
+;; 半角ｶﾅ設定
+(set-fontset-font (frame-parameter nil 'font)
+                  'katakana-jisx0201
+                  (font-spec :family "Cica" :size 12))
+;;;; ずれ確認用
+;;;; 0123456789012345678901234567890123456789
+;;;; ｱｲｳｴｵｱｲｳｴｵｱｲｳｴｵｱｲｳｴｵｱｲｳｴｵｱｲｳｴｵｱｲｳｴｵｱｲｳｴｵ
+;;;; あいうえおあいうえおあいうえおあいうえお
+
 ;;-----------------------------------------------
 ;; %b : バッファ名
 ;; %f : ファイル名
