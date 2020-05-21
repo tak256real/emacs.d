@@ -23,6 +23,8 @@
  delete-selection-mode t
  ediff-split-window-function 'split-window-horizontally
  ediff-window-setup-function 'ediff-setup-windows-plain
+ tab-width 4
+ c-basic-offset tab-width
  indent-tabs-mode nil
  create-lockfiles nil
  auto-save-default nil
@@ -176,6 +178,12 @@
 ;;----------------------------------------------------------------------------
 ;; Handy key bindings
 ;;----------------------------------------------------------------------------
+(global-set-key "\C-h" 'delete-backward-char)
+;;      --- こちらが一般的ではあるが、nwで使うとiserchに問題が…
+;;          効かない場合は以下を試す
+                                        ;(keyboard-translate ?\C-h ?\C-?)
+                                        ;(global-set-key "\C-h" nil)
+
 (global-set-key (kbd "C-.") 'set-mark-command)
 (global-set-key (kbd "C-x C-.") 'pop-global-mark)
 
