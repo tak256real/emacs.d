@@ -2,12 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
-(require-package 'recentf-ext)
-
 (add-hook 'after-init-hook 'recentf-mode)
 (setq-default
- recentf-max-saved-items 5120
- recentf-exclude '("/tmp/" "/ssh:"))
+ recentf-max-saved-items 1000
+ recentf-exclude `("/tmp/" "/ssh:" ,(concat package-user-dir "/.*-autoloads\\.el\\'")))
 
 
 (provide 'init-recentf)
