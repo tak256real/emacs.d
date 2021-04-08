@@ -48,10 +48,13 @@ site-lisp/package/
 /rake.cache
 /plantuml.jar
 /magithub
+.cache/
+/forge-database.sqlite
+/transient
+/.lsp-session-v1
+/smex-items
+/eln-cache/
 /idlwave/
 /skk-get-jisyo/
 /url/
-.cache/
-/forge-database.sqlite
 migemo-pattern
-transient/
